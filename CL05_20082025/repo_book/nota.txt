@@ -1,0 +1,2 @@
+Creo que no entendi este ejercicio. Lo de la carpeta zip lo encontre en https://www.cs.usfca.edu/~peter/ipp/index.html
+Se supone que ahi los autores añadieron todos los codigos que usaron para ejemplificar algo.
