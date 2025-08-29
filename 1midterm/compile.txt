@@ -1,0 +1,3 @@
+g++ main.cpp kernel.cpp lineal/map_pgm.cpp lineal/map_ppm.cpp -o lin.out
+g++ -pthread main.cpp kernel.cpp pthread/map_pgm.cpp pthread/map_ppm.cpp -o pthr.out
+g++ -fopenmp main.cpp kernel.cpp openMp/map_pgm.cpp openMp/map_ppm.cpp -o omp.out
