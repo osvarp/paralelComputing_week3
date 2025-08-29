@@ -14,15 +14,15 @@ int main(int argc, char* argv[]) {
 		{1,1,1},
 		{1,1,1},
 		{1,1,1}
-	},1),*laplace = new Kernel({
+	},9),*laplace = new Kernel({
 		{-1,-1,-1},
 		{-1,8,-1},
 		{-1,-1,-1}
-	},0),*realce = new Kernel({
+	}),*sharpen = new Kernel({
 		{0,-1,0},
 		{-1,5,-1},
 		{0,-1,0}
-	},0);
+	});
 	
 	char magic[3];
 
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 	if (argc<5 && argv[3]=="--f" ){
 		if(!strcmp(argv[4],"blur"))my_kernel=blur;
 		else if(!strcmp(argv[4],"laplace"))my_kernel=laplace;
-		else if(!strcmp(argv[4],"realce"))my_kernel=realce;
+		else if(!strcmp(argv[4],"sharpen"))my_kernel=sharpen;
 		else{
 			std::cout << "Error: The filter type " << argv[4] << " is not recognized." << std::endl;
 			return 1;
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
 	(void) fprintf(file, "%s\n", magic);
 	my_filt->write_to(file);
 	(void) fclose(file);
-	delete blur; delete laplace; delete realce; delete my_map; delete my_filt;
+	delete blur; delete laplace; delete sharpen; delete my_map; delete my_filt;
 	
 	return 0;
 }

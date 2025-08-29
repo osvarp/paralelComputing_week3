@@ -36,20 +36,21 @@ void pgmMap::write_to(FILE*fout) {
 
 
 // APPLY KERNEL STUFF
-struct tdata{ std::vector<std::vector<int>> *ori,*blur; Kernel*krnl; int l,r,u,d; };
+struct tdata{ std::vector<std::vector<int>> *ori,*blur; Kernel*krnl; int l,r,u,d,max_color; };
 void*worker_apply_kernel(void *arg){
 	tdata *dat=(tdata*)arg;
 	Kernel *krnl=new Kernel; *krnl=*dat->krnl;
 	for(int i=dat->u;i<dat->d;++i)for(int j=dat->l;j<dat->r;++j){
-		krnl->init();
+		int vl=0;
 		for(int mx=-krnl->step;mx<=krnl->step;++mx)for(int my=-krnl->step;my<=krnl->step;++my){
 			int ni=i+mx,nj=j+my;
 			if(ni>=0&&nj>=0&&ni<int((*dat->ori).size())&&nj<int((*dat->ori)[ni].size())) {
-				krnl->add(mx+krnl->step,my+krnl->step,(*dat->ori)[ni][nj]);
-			} else krnl->neut(mx+krnl->step,my+krnl->step);
+				vl+=(*dat->ori)[ni][nj]* dat->krnl->krnl[mx+krnl->step][my+krnl->step];
+			}  else vl+=dat->krnl->krnl[mx+krnl->step][my+krnl->step]*dat->krnl->neutral;
 		}
-		(*dat->blur)[i][j]=krnl->calculate();
-
+		(*dat->blur)[i][j]=static_cast<int>(double(vl)/double(krnl->normalize));
+		if((*dat->blur)[i][j]<0)(*dat->blur)[i][j]=0;
+		if((*dat->blur)[i][j]>dat->max_color)(*dat->blur)[i][j]=dat->max_color;
 	}
 
 	delete krnl; pthread_exit(NULL);
@@ -62,7 +63,7 @@ pgmMap* pgmMap::apply_kernel( Kernel *krnl ) {
 	std::vector<std::vector<tdata>> pdt(2,std::vector<tdata>(2));
 	int wmd=this->width/2,hmd=this->height/2;
 	for(int i=0;i<2;++i)for(int j=0;j<2;++j){
-		pdt[i][j]={&this->mp,&blr->mp,krnl,(j)?wmd:0,(j)?this->width:wmd,(i)?hmd:0,(i)?this->height:hmd};
+		pdt[i][j]={&this->mp,&blr->mp,krnl,(j)?wmd:0,(j)?this->width:wmd,(i)?hmd:0,(i)?this->height:hmd,this->max_color};
 		pthread_create(&pth[i][j],NULL,worker_apply_kernel,(void*)&pdt[i][j]);
 	}
 	for(int i=0;i<2;++i)for(int j=0;j<2;++j)pthread_join(pth[i][j],NULL);

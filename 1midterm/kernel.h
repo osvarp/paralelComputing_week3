@@ -7,19 +7,12 @@ Autor: Oscar Vargas Pabon
 #include<vector>
 
 class Kernel{
-	std::vector<std::vector<int>> krnl; bool normalize;
-
-	int acum,cnt;
-public:
-
-	int step;
+	public:
+	std::vector<std::vector<int>> krnl;
+	int normalize,neutral, step;
 
 	Kernel()=default;;
-	Kernel(const std::vector<std::vector<int>> &, bool );
-	void init();
-	void add(int,int,int);
-	void neut(int,int);
-	int calculate();
+	Kernel(const std::vector<std::vector<int>> &, int=1,int=0 );
 };
 
 #endif

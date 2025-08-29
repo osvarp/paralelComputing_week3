@@ -1,3 +1,12 @@
+# Compiling withouth MPI
 g++ main.cpp kernel.cpp lineal/map_pgm.cpp lineal/map_ppm.cpp -o lin.out
 g++ -pthread main.cpp kernel.cpp pthread/map_pgm.cpp pthread/map_ppm.cpp -o pthr.out
 g++ -fopenmp main.cpp kernel.cpp openMp/map_pgm.cpp openMp/map_ppm.cpp -o omp.out
+# Compiling with MPI
+mpic++ mpi_main.cpp kernel.cpp lineal/map_pgm.cpp lineal/map_ppm.cpp -o lin.out
+mpic++ -pthread mpi_main.cpp kernel.cpp pthread/map_pgm.cpp pthread/map_ppm.cpp -o pthr.out
+mpic++ -fopenmp mpi_main.cpp kernel.cpp openMp/map_pgm.cpp openMp/map_ppm.cpp -o omp.out
+
+# run with MPI
+mpirun -np 3 ./lin.out images/fruit.ppm fruit_blur.ppm fruit_laplace.ppm fruit_sharpen.ppm
+mpirun -np 3 ./lin.out images/damma.ppm damma_blur.ppm damma_laplace.ppm damma_sharpen.ppm

@@ -33,7 +33,7 @@ void pgmMap::write_to(FILE*fout) {
   (void) fprintf(fout, "%d %d\n%d\n", this->width, this->height, this->max_color);
   for(const std::vector<int> &rw:this->mp)for(int vl:rw)fprintf(fout, "%d\n", vl);
 }
-pgmMap* pgmMap::apply_kernel( Kernel *tkrnl ) {
+pgmMap* pgmMap::apply_kernel( Kernel *krnl ) {
 	pgmMap *blr = new pgmMap(this->mp,this->max_color);
 	#pragma omp parallel
 	{
@@ -43,16 +43,16 @@ pgmMap* pgmMap::apply_kernel( Kernel *tkrnl ) {
 			{
 				#pragma omp for
 				for(int j=0;j<this->width;++j) {
-					Kernel *krnl=new Kernel; *krnl=*tkrnl;
-					krnl->init();
+					int vl=0;
 					for(int mx=-krnl->step;mx<=krnl->step;++mx)for(int my=-krnl->step;my<=krnl->step;++my){
 						int ni=i+mx,nj=j+my;
 						if(ni>=0&&nj>=0&&ni<this->height&&nj<this->width){
-							krnl->add(mx+krnl->step,my+krnl->step,this->mp[ni][nj]);
-						} else krnl->neut(mx+krnl->step,my+krnl->step);
+							vl+=this->mp[ni][nj]* krnl->krnl[mx+krnl->step][my+krnl->step];
+						} else vl+=krnl->krnl[mx+krnl->step][my+krnl->step]*krnl->neutral;
 					}
-					blr->mp[i][j]=krnl->calculate();
-					delete krnl;
+					blr->mp[i][j]=static_cast<int>(double(vl)/double(krnl->normalize));
+					if(blr->mp[i][j]<0)blr->mp[i][j]=0;
+					if(blr->mp[i][j]>this->max_color)blr->mp[i][j]=this->max_color;
 				}
 			}
 		}
