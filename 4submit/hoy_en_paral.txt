@@ -1,0 +1,86 @@
+Actividad juego de la vida de Conway
+Oscar Vargas Pabon
+
+Intel(R) Xeon(R) CPU @ 2.20GHz
+2 cpus logicas
+
+                        Secuencial:
+
+3.96 s
+3.86 s
+3.93 s
+2.85 s
+2.82 s
+
+Promedio :
+3.546
+
+                        Multithreading:
+
+a=[2.9336349964141846,2.956101179122925,4.029467821121216,3.697298288345337,2.9422197341918945]
+a.sort()
+a.pop();a.pop(0);
+print(sum(a)/len(a))
+
+Promedio:
+3.1985397338867188
+
+                        Multiprocessing:
+
+a=[2.9357314109802246,2.3459312915802,2.3314685821533203,2.3291428089141846,2.334846258163452]
+a.sort()
+a.pop();a.pop(0);
+print(sum(a)/len(a))
+
+Promedio:
+2.3374153772989907
+
+                            Hallando los spedups
+
+speedup=lambda t_seq,t_ot:t_seq/t_ot
+t_seq=3.546; t_thrd=3.1985397338867188; t_proc=2.3374153772989907;
+print("Speedup thread <%f>\nSpeedup procce <%f>"%(speedup(t_seq,t_thrd),speedup(t_seq,t_proc)))
+
+
+Respuesta:
+Speedup thread <1.108631>
+Speedup procce <1.517060>
+
+
+
+			MI PC
+Numero de CPUs lógicas: 8
+Porcentaje de uso de la CPU 16.7%
+Total memory 6091.31 MB, porcentaje de memoria disponible 25.34%
+
+			Secuencial
+a=[1.445688247680664,1.4506659507751465,1.4660518169403076,1.4744021892547607,1.7438380718231201];
+a.sort();
+x=a.pop();xx=a.pop(0);
+print(sum(a)/len(a));
+
+Promedio: 1.463706652323405
+
+			MULTITHREADING
+a=[2.542898178100586,1.8883261680603027,1.8575701713562012,1.8412299156188965,1.923079490661621];
+a.sort();
+x=a.pop();xx=a.pop(0);
+print(sum(a)/len(a));
+Promedio: 1.8896586100260417
+			multiprocessing
+a=[2.3536012172698975,2.2455637454986572,2.272753953933716,2.3945300579071045,2.5302860736846924];
+a.sort();
+x=a.pop();xx=a.pop(0);
+print(sum(a)/len(a));
+promedio: 2.3402950763702393
+
+                            Hallando los spedups
+
+speedup=lambda t_seq,t_ot:t_seq/t_ot;
+t_seq=1.463706652323405; t_thrd=1.8896586100260417; t_proc=2.3402950763702393;
+print("Speedup thread <%f>\nSpeedup procce <%f>"%(speedup(t_seq,t_thrd),speedup(t_seq,t_proc)));
+
+
+Respuesta:
+Speedup thread <0.774588>
+Speedup procce <0.625437>
