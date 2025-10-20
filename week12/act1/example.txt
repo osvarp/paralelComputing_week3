@@ -1,0 +1,3 @@
+2
+images/damma.pgm dama_out.pgm sharpen
+images/fruit.ppm fruit_out.ppm laplace
