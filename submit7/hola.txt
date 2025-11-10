@@ -1,0 +1,6 @@
+Submit 7
+
+Autor:Oscar Vargas Pabon
+
+Los codigos estan en  https://github.com/osvarp/paralelComputing_week3
+Bajo la carpeta /submit7
