@@ -1,0 +1,6 @@
+The log files are for the input100x100 case
+On this case the total times (with I/O) where
+
+lin 	157546
+omp 	155463
+loc 	183765
